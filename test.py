@@ -21,36 +21,71 @@ import json
 from bson import json_util, ObjectId
 import sys
 import requests
+import re
 
 
 
-print "testing for the ducks in 2016"
+print "testing for the ducks in March (03) of 2015"
 
 team = "ANA"
-year = "2016"
+year = "2015"
+fullyear = "20142015"
 month = "03"
 
-
-
-
-
-def getGameIDs(team, year, month):
-	team = "ANA"
-	year = "2016"
-	month = "03"
-
+def get_game_ids(team, year, month):
 	url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + year + "/" + month + "/iphone/clubschedule.json"
 
 	game_ids = []
 
-	schedule = requests.get(url).json()
+	response = requests.get(url).json()
 
 	game_count = 0
-	for game in schedule['games']:
-		game_ids.append(game['gameId'])
+	for game in response['games']:
+		game_ids.append(str(game['gameId']))
 
-	print game_ids
+	return game_ids
 
-getGameIDs(team, year, month)
+def get_ext_ids(game_id, year):
+	url = "http://live.nhle.com/GameData/" + year + "/" + game_id + "/gc/gcgm.jsonp"
+	response = requests.get(url).text
+	trimmed_response = response[10:-1]
+
+	json_response = json.loads(trimmed_response)
+
+	ext_ids = []
+
+	for event in json_response['video']['events']:
+		for feed in event['feeds']:
+			ext_ids.append(str(feed['extId']))
+
+
+
+	return ext_ids
+
+def get_highlight_url(ext_id):
+	url = "http://video.nhl.com/videocenter/servlets/playlist?ids=" + ext_id + "&format=json"
+	response = requests.get(url).json()
+	return response[0]['publishPoint']
+
+
+
+
+game_ids  = get_game_ids(team, year, month)
+print 
+ext_ids = get_ext_ids(game_ids[2], fullyear)
+
+highlight_urls = []
+
+p = re.compile('.*(goal).*')
+
+for ext_id in ext_ids:
+	highlight_url = get_highlight_url(ext_id)
+	if p.match(highlight_url):
+		print highlight_url
+
+
+print highlight_urls
+
+
 
 
