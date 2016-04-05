@@ -25,9 +25,9 @@ import re
 
 
 
-print "testing for the ducks in March (03) of 2015"
+print "testing for the Calgary in March (03) of 2015"
 
-team = "ANA"
+team = "CGY"
 year = "2015"
 fullyear = "20142015"
 month = "03"
@@ -76,12 +76,13 @@ ext_ids = get_ext_ids(game_ids[2], fullyear)
 
 highlight_urls = []
 
+# Could change to only get english and home links
 p = re.compile('.*(goal).*')
 
 for ext_id in ext_ids:
 	highlight_url = get_highlight_url(ext_id)
 	if p.match(highlight_url):
-		print highlight_url
+		highlight_urls.append(highlight_url)
 
 
 print highlight_urls
