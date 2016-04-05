@@ -35,8 +35,10 @@ fullyear = "20152016"
 month = "01"
 
 playername = "Corey Perry"
+event_type = "goal"
 
 print "Testing for the team " + team + " in the year " + fullyear + ", " + month
+print "Looking for " + playername + " " + event_type + "s."  
 
 def get_game_ids(team, year, month):
 	url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + year + "/" + month + "/iphone/clubschedule.json"
@@ -102,10 +104,24 @@ def parse_for_saves(ext_ids):
 			highlight_urls.append(highlight_url)
 	return highlight_urls
 
+# Currently just doing event type
 def parse_for_both(playername, event_type, ext_ids):
 	p1 = re.compile('.*(' + event_type + ').*')
 	p2 = re.compile('.*(' + playername + ').*')
+	highlight_urls = []
+	for ext_id in ext_ids:
+		highlight_data = get_event_data(ext_id)
+		highlight_url = get_highlight_url(ext_id)
+		if (p1.match(highlight_data['publishPoint'])):
+			if(p2.match(highlight_data['name'])):
+				highlight_urls.append(highlight_url)
+	return highlight_urls
 
+
+def get_event_data(ext_id):
+	url = "http://video.nhl.com/videocenter/servlets/playlist?ids=" + ext_id + "&format=json"
+	response = requests.get(url).json()
+	return response[0]
 
 def get_description_of_event(ext_id):
 	url = "http://video.nhl.com/videocenter/servlets/playlist?ids=" + ext_id + "&format=json"
@@ -123,8 +139,7 @@ def get_highlight_url(ext_id):
 game_ids  = get_game_ids(team, year, month)
 print 
 ext_ids = get_ext_ids(game_ids[2], fullyear)
-set1 = parse_for_player("Corey Perry", ext_ids)
-set2 = parse_for_goals(ext_ids)
+print parse_for_both("Corey Perry", "save", ext_ids)
 
 
 
