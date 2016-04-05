@@ -18,7 +18,7 @@
 
 
 # Earliest we can do is 20132014
-# Latest we can do is 20142015
+# Got 2015 from 20152016 working
 
 
 
@@ -31,8 +31,8 @@ import re
 
 team = "ANA"
 year = "2015"
-fullyear = "20142015"
-month = "02"
+fullyear = "20152016"
+month = "11"
 
 print "Testing for the team " + team + " in the year " + fullyear + ", " + month
 
@@ -52,7 +52,7 @@ def get_game_ids(team, year, month):
 def get_ext_ids(game_id, fullyear):
 	url = "http://live.nhle.com/GameData/" + fullyear + "/" + game_id + "/gc/gcgm.jsonp"
 	response = requests.get(url).text
-	if (fullyear == "20142015"):
+	if (fullyear == "20142015" or fullyear == "20152016"):
 		trimmed_response = response[10:-1]
 	else:
 		trimmed_response = response[10:-2]
