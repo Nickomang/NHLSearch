@@ -30,9 +30,9 @@ import requests
 import re
 
 team = "ANA"
-year = "2015"
+year = "2016"
 fullyear = "20152016"
-month = "11"
+month = "01"
 
 print "Testing for the team " + team + " in the year " + fullyear + ", " + month
 
@@ -64,6 +64,7 @@ def get_ext_ids(game_id, fullyear):
 		for feed in event['feeds']:
 			ext_ids.append(str(feed['extId']))
 
+	print ext_ids
 	return ext_ids
 
 def get_highlight_url(ext_id):
