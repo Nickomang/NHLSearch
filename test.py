@@ -20,6 +20,8 @@
 # Earliest we can do is 20132014
 # Got 2015 from 20152016 working
 
+# Saves are of type 506
+# Goals are of type 505
 
 
 import json
@@ -28,7 +30,9 @@ from bson import json_util, ObjectId
 import sys
 import requests
 import re
+import time
 
+start_time = time.time()
 team = "ANA"
 year = "2016"
 fullyear = "20152016"
@@ -36,6 +40,8 @@ month = "01"
 
 playername = "Corey Perry"
 event_type = "goal"
+event_num = 505
+location = 'h'
 
 print "Testing for the team " + team + " in the year " + fullyear + ", " + month
 print "Looking for " + playername + " " + event_type + "s."  
@@ -50,25 +56,30 @@ def get_game_ids(team, year, month):
 	game_count = 0
 	for game in response['games']:
 		game_ids.append(str(game['gameId']))
-	print game_ids
 	return game_ids
 
-def get_ext_ids(game_id, fullyear):
+# 
+def get_ext_ids(game_id, fullyear, event_num, location):
 	url = "http://live.nhle.com/GameData/" + fullyear + "/" + game_id + "/gc/gcgm.jsonp"
 	response = requests.get(url).text
 	if (fullyear == "20142015" or fullyear == "20152016"):
 		trimmed_response = response[10:-1]
 	else:
 		trimmed_response = response[10:-2]
-	print 
 	json_response = json.loads(trimmed_response)
 	ext_ids = []
 
-	for event in json_response['video']['events']:
-		for feed in event['feeds']:
-			ext_ids.append(str(feed['extId']))
+	# 503 hits?
+	# If goals, 505
+	# If saves, 506
 
-	print ext_ids
+	for event in json_response['video']['events']:
+		# if (event['type'] == event_type):
+		if (event['type'] == event_num):
+			for feed in event['feeds']:
+				if (str(feed['extId']).endswith(location)):
+					ext_ids.append(str(feed['extId']))
+	# print ext_ids
 	return ext_ids
 
 # Returns the ext_ids of events involving the player named
@@ -115,6 +126,7 @@ def parse_for_both(playername, event_type, ext_ids):
 		if (p1.match(highlight_data['publishPoint'])):
 			if(p2.match(highlight_data['name'])):
 				highlight_urls.append(highlight_url)
+				print "Found a " + event_type
 	return highlight_urls
 
 
@@ -134,18 +146,18 @@ def get_highlight_url(ext_id):
 	return response[0]['publishPoint']
 
 
-
+# Gets Corey Perry goals from January 2016
 
 game_ids  = get_game_ids(team, year, month)
 print 
-ext_ids = get_ext_ids(game_ids[2], fullyear)
-print parse_for_both("Corey Perry", "save", ext_ids)
-
-
-
-# print get_description_of_event(ext_ids[2])
-# print parse_for_goals(ext_ids)
-
+ext_ids = []
+for game_id in game_ids:
+	ext_ids_single = get_ext_ids(game_id, fullyear, event_num, location)
+	for ext_id_single in ext_ids_single:
+		ext_ids.append(ext_id_single)
+print len(ext_ids)
+print parse_for_both(playername, event_type, ext_ids)
+print "Took ", time.time() - start_time, " to run."
 
 
 
