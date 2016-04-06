@@ -1,15 +1,6 @@
 # Url for player images
 # http://tsnimages.tsn.ca/ImageProvider/PlayerHeadshot?seoId=[first]-[last]
 
-# NHL Game ID
-# First 4 digits : year in which season begins
-# Digits 5-6
-# 	01 : Preseason
-#	02 : Regular Season 
-# 	03 : Playoffs
-#	09 : Olympics
-# Digits 7-10 :
-
 # Highlight videos
 # http://live.nhle.com/GameData/[year]/[game_id]/gc/gcgm.jsonp
 
@@ -44,8 +35,8 @@ fullyear = "20152016"
 month = "01"
 
 playername = "Corey Perry"
+
 event_type = 'hit'
-event_num = 503
 location = 'h'
 
 print "Testing for the team " + team + " in the year " + fullyear + ", " + month
@@ -157,7 +148,7 @@ game_ids  = get_game_ids(team, year, month)
 print 
 ext_ids = []
 for game_id in game_ids:
-	ext_ids_single = get_ext_ids(game_id, fullyear, event_num, location)
+	ext_ids_single = get_ext_ids(game_id, fullyear, event_dict[event_type], location)
 	for ext_id_single in ext_ids_single:
 		ext_ids.append(ext_id_single)
 print len(ext_ids)
