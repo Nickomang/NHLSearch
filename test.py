@@ -23,24 +23,29 @@
 # Saves are of type 506
 # Goals are of type 505
 
+# Average times :
+	# hits   -> 15s
+	# goals  -> 35s
+	# saves  -> 120s
+
 
 import json
-import json
-from bson import json_util, ObjectId
-import sys
 import requests
 import re
 import time
 
+event_dict = {'hit': 503, 'goal': 505, 'save': 506}
+
 start_time = time.time()
+
 team = "ANA"
 year = "2016"
 fullyear = "20152016"
 month = "01"
 
 playername = "Corey Perry"
-event_type = "goal"
-event_num = 505
+event_type = 'hit'
+event_num = 503
 location = 'h'
 
 print "Testing for the team " + team + " in the year " + fullyear + ", " + month
