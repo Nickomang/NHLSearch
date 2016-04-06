@@ -1,25 +1,3 @@
-# Url for player images
-# http://tsnimages.tsn.ca/ImageProvider/PlayerHeadshot?seoId=[first]-[last]
-
-# Highlight videos
-# http://live.nhle.com/GameData/[year]/[game_id]/gc/gcgm.jsonp
-
-
-#so lets test the ducks.
-
-
-# Earliest we can do is 20132014
-# Got 2015 from 20152016 working
-
-# Saves are of type 506
-# Goals are of type 505
-
-# Average times :
-	# hits   -> 15s
-	# goals  -> 35s
-	# saves  -> 120s
-
-
 import json
 import requests
 import re
@@ -42,6 +20,8 @@ location = 'h'
 print "Testing for the team " + team + " in the year " + fullyear + ", " + month
 print "Looking for " + playername + " " + event_type + "s."  
 
+
+# Returns a list of the game ids for a given team during a given year and month
 def get_game_ids(team, year, month):
 	url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + year + "/" + month + "/iphone/clubschedule.json"
 
@@ -154,6 +134,11 @@ for game_id in game_ids:
 print len(ext_ids)
 print parse_for_both(playername, event_type, ext_ids)
 print "Took ", time.time() - start_time, " to run."
+
+# Average times :
+	# hits   -> 15s
+	# goals  -> 35s
+	# saves  -> 120s
 
 
 
