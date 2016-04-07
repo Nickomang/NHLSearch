@@ -1,48 +1,54 @@
+# Engine for NHL Video Database Search
+# Possible queries
+# For each: all time, month, and game specific
+# For each: single events, multiple events, 
+# Team event
+# Player event
+# Team + team event
+# Player + Player
+# Player + Team event
+
+# Dependencies
 import json
 import requests
 import re
-import time
 
+# Global Variables
 event_dict = {'hit': 503, 'goal': 505, 'save': 506}
 event_types = ['hit','goal','save']
 event_types_key = [1,0,0]
 
-def get_player_team(playername):
-	return "ANA"
-
-bruh = 33
-
 # Returns a list of the game ids for a given team during a given year and month
-def get_game_ids(team, year, month):
+def get_game_ids(team, season, month):
 	if (month > 7):
-		url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(year - 1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+		url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season - 1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
 	else:
-		url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(year) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+		url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
 	game_ids = []
 	response = requests.get(url).json()
 	for game in response['games']:
 		game_ids.append(str(game['gameId']))
 	return game_ids
 
-# Returns a list of game_id's for a given team during the entirety of a given year
-def get_game_ids_full(team, year):
+# Returns a list of game_id's for a given team during the entirety of a given season
+def get_game_ids_full(team, season):
 	game_ids = []
-	if year == 2016:
+	if season == 2016:
 		# Need to get october goals
 		for month in (10,11,12,1,2):
 			if (month > 7):
-				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(year-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
 			else:
-				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(year) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
 			response = requests.get(url).json()
 			for game in response['games']:
 				game_ids.append(str(game['gameId']))
 	else:
 		for month in (10,11,12,1,2,3,4,5,6,7):
 			if (month > 7):
-				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(year-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
 			else:
-				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(year) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
 			response = requests.get(url).json()
 			for game in response['games']:
 				game_ids.append(str(game['gameId']))
@@ -57,9 +63,6 @@ def get_ext_ids(game_id, fullyear, event_num, location):
 	response = requests.get(url).text
 
 	# Necesarry because sometimes the NHL has game ids that don't actually correspond to anything
-	
-
-
 	print "using game", game_id
 	trimmed_response = response[10:-1]
 	try:
@@ -118,11 +121,7 @@ def parse_for_player(playername, ext_ids):
 			print "Found one!"
 	return highlight_urls
 
-def get_event_data(ext_id):
-	url = "http://video.nhl.com/videocenter/servlets/playlist?ids=" + ext_id + "&format=json"
-	response = requests.get(url).json()
-	return response[0]
-
+# Returns a JSON description of the event associated with the given ext_id
 def get_description_of_event(ext_id):
 	url = "http://video.nhl.com/videocenter/servlets/playlist?ids=" + ext_id + "&format=json"
 	# Because of fuckin ryan o'reilly
@@ -133,11 +132,14 @@ def get_description_of_event(ext_id):
 	json_response = json.loads(response)
 	return json_response[0]['name']
 
+# Gets the link to the .mp4 file of the highlight
 def get_highlight_url(ext_id):
 	url = "http://video.nhl.com/videocenter/servlets/playlist?ids=" + ext_id + "&format=json"
 	response = requests.get(url).json()
 	return response[0]['publishPoint']
 
+# Takes the event_types_key and returns a list of the event types specified
+# e.g [0,1,0] -> ['goal']
 def get_event_types(event_types_key):
 	results = []
 	count = 0
@@ -147,85 +149,12 @@ def get_event_types(event_types_key):
 		count += 1
 	return results
 
-
+# Takes what would be a list of lists of ext_ids and turns it into a single list of ext_ids
 def filter_game_ids(game_ids, event_types, fullyear, location):
 	ext_ids = []
 	for game_id in game_ids:
 		for event_type in event_types:
-			# print event_dict[event_type]
 			ext_ids_single = get_ext_ids(game_id, fullyear, event_dict[event_type], location)
 			for ext_id_single in ext_ids_single:
-				# print ext_id_single
 				ext_ids.append(ext_id_single)
 	return ext_ids
-
-
-
-
-# INFORMATION THAT WILL BE POTENTIALLY PASSED IN BY USER
-
-
-# team = "ANA"
-# year = 2015 # NOTE: This is the later part of the season's year (e.g 2014/2015 = 2015)
-# fullyear = str(year-1)+str(year)
-# print fullyear
-# month = 1
-
-# playername = "Corey Perry"
-
-# event_type = 'goal'
-# location = 'h'
-
-# event_types = ['hit', 'goal', 'save']
-# event_types_key = [1,0,0]
-
-# active_event_types = get_event_types(event_types_key)
-
-# game_ids  = get_game_ids(team, year, month)
-# # game_ids = get_game_ids_full(team,year)
-# print game_ids
-# print 
-# active_event_types = get_event_types(event_types_key)
-# print active_event_types
-
-# ext_ids = filter_game_ids(game_ids, active_event_types)
-
-# print ext_ids
-# print len(ext_ids)
-
-# print parse_for_player(playername, ext_ids)
-
-
-
-
-# print len(get_game_ids_full(team,year))
-
-# active_event_types = get_event_types(event_types_key)
-# print active_event_types
-# print parse_for_saves(ext_ids)
-# print parse_for_event(ext_ids, active_event_types)
-
-
-
-# print "Took ", time.time() - start_time, " to run."
-# Average times :
-	# hits   -> 15s
-	# goals  -> 35s
-	# saves  -> 120s
-
-
-# Use prechecking with 503, etc codes instead of regex match
-
-# Possible queries
-# For each: all time, month, and game specific
-# For each: single events, multiple events, 
-# Team event
-# Player event
-# Team + team event
-# Player + Player
-# Player + Team event
-
-
-
-
-
