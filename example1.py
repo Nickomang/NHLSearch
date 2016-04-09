@@ -7,9 +7,9 @@ import time
 start_time = time.time()
 
 # Information
-playername = "Evgeni Malkin"
-team = "PIT"
-season = 2016
+playername = "Patrice Bergeron"
+team = "BOS"
+season = 2015
 month = 12
 fullyear = str(season-1)+str(season)
 location = 'h'

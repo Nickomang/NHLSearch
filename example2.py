@@ -7,10 +7,10 @@ import time
 start_time = time.time()
 
 # Information
-playername = "Max Pacioretty"
-seasons = "MTL"
-year = 2015
-fullyear = str(year-1)+str(year)
+playername = "Patrice Bergeron"
+team = "BOS"
+season = 2015
+fullyear = str(year-1)+str(season)
 # h or a or fr (seems they dont store all french broadcasts)
 location = 'fr'
 # [hits, goals, saves]
@@ -22,7 +22,7 @@ engine.get_ext_ids("2014030111", "20132014", 505,"fr")
 active_event_types = engine.get_event_types(event_types_key)
 print "Looking for ", playername, active_event_types, "from", season
 # print active_event_types
-game_ids = engine.get_game_ids_full(season,year)
+game_ids = engine.get_game_ids_full(season,season)
 print game_ids
 # print len(game_ids)
 ext_ids = engine.filter_game_ids(game_ids, active_event_types,fullyear,location)
