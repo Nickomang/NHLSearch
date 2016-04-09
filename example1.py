@@ -3,6 +3,7 @@
 
 import engine
 import time
+import json
 
 start_time = time.time()
 
@@ -24,6 +25,6 @@ ext_ids = engine.filter_game_ids(game_ids, active_event_types,fullyear,location)
 # print ext_ids
 final_urls = engine.parse_for_player(playername, ext_ids)
 print "Found", len(final_urls), active_event_types, ":"
-print final_urls
+print json.loads(final_urls)
 print "Took", time.time() - start_time, "to run."
 # Usually takes around 35 seconds

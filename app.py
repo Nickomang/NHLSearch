@@ -1,36 +1,28 @@
-import threading
-import subprocess
-import uuid
-from flask import Flask
-from flask import render_template, url_for, abort, jsonify, request
+from flask import Flask, render_template
+import engine
+import example1
+
 app = Flask(__name__)
 
-
-# def run_script(id):
-#     subprocess.call(["engine.py", "argument1", "argument2"])
-#     background_scripts[id] = True
-
-@app.route('/')
-def index():
+@app.route("/")
+def main():
     return render_template('index.html')
 
-# @app.route('/generate')
-# def generate():
-#     id = str(uuid.uuid4())
-#     background_scripts[id] = False
-#     threading.Thread(target=lambda: run_script(id)).start()
-#     return render_template('processing.html', id=id)
+@app.route('/search')
+def search():
+	return flask.jsonify(**example1)
+    # if request.method == "POST":
+    #     return example2
+    # return render_template('search.html')
 
-# @app.route('/test')
-# def test():
-# 	return render_template('test.html')
+# ERROR HANDLING
+@app.errorhandler(404)
+def pageNotFound(error):
+    return "it didnt work"
 
-# @app.route('/is_done')
-# def is_done():
-#     id = request.args.get('id', None)
-#     if id not in background_scripts:
-#         abort(404)
-#     return jsonify(done=background_scripts[id])
+@app.errorhandler(500)
+def pageNotFound(error):
+    return "internal server error"
 
 if __name__ == "__main__":
     app.run()
