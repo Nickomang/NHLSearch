@@ -7,8 +7,8 @@ import time
 start_time = time.time()
 
 # Information
-playername = "Alex Ovechkin"
-team = "WSH"
+playername = "Evgeni Malkin"
+team = "PIT"
 season = 2016
 month = 12
 fullyear = str(season-1)+str(season)
