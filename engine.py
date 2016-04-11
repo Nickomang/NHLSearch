@@ -10,6 +10,7 @@
 
 # Dependencies
 import json
+import time
 import requests
 import re
 
@@ -159,3 +160,20 @@ def filter_game_ids(game_ids, event_types, fullyear, location):
 			for ext_id_single in ext_ids_single:
 				ext_ids.append(ext_id_single)
 	return ext_ids
+
+#Uses all of the above functions to allow the user to search for a player and return the goals
+def single_player_search(playername, team, season, month, fullyear, location, event_types_key):
+	active_event_types = get_event_types(event_types_key)
+	print "Looking for ", playername, active_event_types, "from", season, "/", month
+	game_ids = get_game_ids(team,season,month)
+	active_event_types = get_event_types(event_types_key)
+	ext_ids = filter_game_ids(game_ids, active_event_types,fullyear,location)
+	# print ext_ids
+	final_urls = parse_for_player(playername, ext_ids)
+	print "Found", len(final_urls), active_event_types, ":"
+
+	final_dict = {}
+	final_dict['links'] = final_urls
+	final_json = json.dumps(final_dict)
+
+	return final_json

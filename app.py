@@ -10,16 +10,16 @@ def index():
 		playername = str(request.form['player'])
 		team = str(request.form['team'])
 		season = int(request.form['season'])
-		month = str(request.form['month'])
+		month = int(request.form['month'])
 		fullyear = str(season-1)+str(season)
 		print fullyear
 		location = 'h'
 		event_types_key = [0,1,0]
 
-		# links = example1.final(playername, team, season, month, fullyear, location, event_types_key)
+		links = engine.single_player_search(playername, team, season, month, fullyear, location, event_types_key)
 
-		return render_template("index.html", playername = playername, season = season, month = month, links = example1.final(playername, team, season, month, fullyear, location, event_types_key))
-	return render_template("index.html")
+		return render_template("single.html", playername = playername, season = season, month = month, links = links)
+	return render_template("single.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
