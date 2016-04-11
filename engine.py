@@ -113,12 +113,13 @@ def parse_for_player(playername, ext_ids):
 	highlight_urls = []
 	p = re.compile('.*(' + playername + ').*')
 	for ext_id in ext_ids:
-		# print "checking ext_id", ext_id
+		print "checking ext_id", ext_id
 		highlight_desc = get_description_of_event(ext_id)
 		if p.match(highlight_desc):
 			highlight_url = get_highlight_url(ext_id)
 			highlight_urls.append(highlight_url)
 			print "Found one!"
+	print highlight_urls
 	return highlight_urls
 
 # Returns a JSON description of the event associated with the given ext_id

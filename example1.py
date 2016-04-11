@@ -8,16 +8,16 @@ import json
 start_time = time.time()
 
 # Information
-playername = "Patrice Bergeron"
-team = "BOS"
-season = 2015
-month = 12
-fullyear = str(season-1)+str(season)
-location = 'h'
-event_types_key = [0,1,0]
+# playername = "Corey Perry"
+# team = "ANA"
+# season = 2014
+# month = 1
+# fullyear = str(season-1)+str(season)
+# location = 'h'
+# event_types_key = [0,1,0]
 
 # Function Calls
-def final():
+def final(playername, team, season, month, fullyear, location, event_types_key):
 	active_event_types = engine.get_event_types(event_types_key)
 	print "Looking for ", playername, active_event_types, "from", season, "/", month
 	game_ids = engine.get_game_ids(team,season,month)
