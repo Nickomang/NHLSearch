@@ -174,6 +174,8 @@ def single_player_search(playername, team, season, month, fullyear, location, ev
 
 	final_dict = {}
 	final_dict['links'] = final_urls
+	# for final_url in final_urls:
+	# 	final_dict['links'] = final_url
 	final_json = json.dumps(final_dict)
 
 	return final_json

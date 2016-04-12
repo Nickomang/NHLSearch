@@ -6,57 +6,8 @@
 </head>
 <body>
 	<h1>Welcome to NHL Search</h1>
-	<form role=form method=post>
-    	<input type=text name=player placeholder="Enter a Player's Name"</br>
-		<select name="team">
-		  <option value="ANA">Anaheim Ducks</option>
-		  <option value="ARZ">Arizona Coyotes</option>
-		  <option value="BOS">Boston Bruins</option>
-		  <option value="BUF">Buffalo Sabres</option>
-		  <option value="CGY">Calgary Flame</option>
-		  <option value="CAR">Carolina Hurricanes</option>
-		  <option value="CHI">Chicago Blackhawks</option>
-		  <option value="COL">Colorado Avalanche</option>
-		  <option value="CBJ">Columbus Blue Jackets</option>
-		  <option value="DAL">Dallas Stars</option>
-		  <option value="DET">Detroit Red Wings</option>
-		  <option value="EDM">Edmonton Oilers</option>
-		  <option value="FLA">Florida Panthers</option>
-		  <option value="LAK">Los Angeles Kings</option>
-		  <option value="MIN">Minnesota Wild</option>
-		  <option value="MTL">Montreal Canadiens</option>
-		  <option value="NSH">Nashville Predators</option>
-		  <option value="NJD">New Jersey Devils</option>
-		  <option value="NYI">New York Islanders</option>
-		  <option value="NYR">New York Rangers</option>
-		  <option value="OTT">Ottawa Senators</option>
-		  <option value="PHI">Philadelphia Flyers</option>
-		  <option value="PIT">Pittsburgh Penguins</option>
-		  <option value="SJS">San Jose Sharks</option>
-		  <option value="STL">St. Louis Blues</option>
-		  <option value="TBL">Tampa Bay Lightning</option>
-		  <option value="TOR">Toronto Maple Leafs</option>
-		  <option value="VAN">Vancouver Canucks</option>
-		  <option value="WSH">Washington Capitals</option>
-		  <option value="WPG">Winnipeg Jets</option>
-		</select>
-		<select name="season" id="">
-			<option value="2014">2013-2014</option>
-			<option value="2015">2014-2015</option>
-			<option value="2016">2015-2016</option>
-		</select>
-		<select name="month" id="">
-			<!-- <option value="0">All</option> -->
-			<option value="1">Jan</option>
-			<option value="2">Feb</option>
-		</select>
-    	<div class="actions"><input type=submit value="Search"></div>
-	</form>
-	<h1>
-		{{ playername }} during {{ season }} {{ month }}
-	</h1>
-	<h3>
-		{{ links }}
-	</h3>
+	<ul>
+		<li><a href="/single">Single-Player Search</a></li>
+	</ul>
 </body>
 </html>

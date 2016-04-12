@@ -63,10 +63,14 @@
     	<div class="actions"><input type=submit value="Search"></div>
 	</form>
 	<h1>
+		{% if playername %}
 		{{ playername }}'s goals during {{ season }}, {{ month }}
+		{% endif %}
 	</h1>
-	<h3>
-		{{ links }}
-	</h3>
+	<ul>
+	{% for url in urls %}
+    	<li><a href="{{ url | string }}">Goal</a></li>
+    {% endfor %}
+	</ul>
 </body>
 </html>
