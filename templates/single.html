@@ -7,8 +7,9 @@
 <body>
 	<h1>Single Player Search</h1>
 	<form role=form method=post>
-    	<input type=text name=player placeholder="Enter a Player's Name"</br>
-		<select name="team">
+    	<input type=text name=player id="name" placeholder="Enter a Player's Name"</br>
+    	<label for="team">Team:</label>
+		<select name="team" id="team">
 		  <option value="ANA">Anaheim Ducks</option>
 		  <option value="ARZ">Arizona Coyotes</option>
 		  <option value="BOS">Boston Bruins</option>
@@ -40,12 +41,14 @@
 		  <option value="WSH">Washington Capitals</option>
 		  <option value="WPG">Winnipeg Jets</option>
 		</select>
-		<select name="season" id="">
+		<label for="season">Season:</label>
+		<select name="season" id="season">
 			<option value="2014">2013-2014</option>
 			<option value="2015">2014-2015</option>
 			<option value="2016">2015-2016</option>
 		</select>
-		<select name="month" id="">
+		<label for="month">Month:</label>
+		<select name="month" id="month">
 			<option value="0">All</option>
 			<option value="1">Jan</option>
 			<option value="2">Feb</option>
@@ -60,13 +63,23 @@
 			<option value="11">Nov</option>
 			<option value="12">Dec</option>
 		</select>
+		<label for="chk_group[]">Events:</label>
+		<input type="checkbox" name="hit" value="hit" />Hits<br />
+		<input type="checkbox" name="goal" value="goal" checked />Goals<br />
+		<input type="checkbox" name="save" value="save" />Saves<br />
+		<label for="location">Broadcast:</label>
+		<select name="location" id="location">
+			<option value="h">Home</option>
+			<option value="a">Away</option>
+			<option value="fr">French</option>
+		</select>
     	<div class="actions"><input type=submit value="Search"></div>
 	</form>
 	<h1>
 		{% if playername %}
 		{{ playername }}'s 
-		{% for type in active_event_types %}
 		{{ urls | length }}
+		{% for type in active_event_types %}
 		{{ type }}s,
 		from
 		{% if month == 0 %}

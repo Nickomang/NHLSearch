@@ -17,13 +17,23 @@ def single():
 		season = int(request.form['season'])
 		month = int(request.form['month'])
 		fullyear = str(season-1)+str(season)
-		location = 'h'
-		event_types_key = [0,1,0]
-		active_event_types = engine.get_event_types(event_types_key)
-		links = engine.single_player_search(playername, team, season, month, fullyear, location, event_types_key)
+		location = str(request.form['location'])
+
+		active_event_types = []
+		if 'hit' in request.form:
+			hits = str(request.form['hit'])
+			active_event_types.append(hits)
+		if 'goal' in request.form:
+			goals = str(request.form['goal'])
+			active_event_types.append(goals)
+		if 'save' in request.form:
+			saves = str(request.form['save'])
+			active_event_types.append(saves)
+
+		print active_event_types
+		links = engine.single_player_search(playername, team, season, month, fullyear, location, active_event_types)
 
 		urls = json.loads(links)['links']
-
 		return render_template("single.html", playername = playername, season = season, active_event_types=active_event_types, month = month, urls = urls)
 	return render_template("single.html")
 

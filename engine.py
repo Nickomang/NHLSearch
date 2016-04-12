@@ -162,8 +162,8 @@ def filter_game_ids(game_ids, event_types, fullyear, location):
 	return ext_ids
 
 #Uses all of the above functions to allow the user to search for a player and return the goals
-def single_player_search(playername, team, season, month, fullyear, location, event_types_key):
-	active_event_types = get_event_types(event_types_key)	
+def single_player_search(playername, team, season, month, fullyear, location, active_event_types):
+	# active_event_types = get_event_types(event_types_key)	
 	if month == 0:
 		print "Looking for ", playername, active_event_types, "from", season
 		game_ids = get_game_ids_full(team,season)
