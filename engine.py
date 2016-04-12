@@ -163,19 +163,21 @@ def filter_game_ids(game_ids, event_types, fullyear, location):
 
 #Uses all of the above functions to allow the user to search for a player and return the goals
 def single_player_search(playername, team, season, month, fullyear, location, event_types_key):
-	active_event_types = get_event_types(event_types_key)
-	print "Looking for ", playername, active_event_types, "from", season, "/", month
-	game_ids = get_game_ids(team,season,month)
-	active_event_types = get_event_types(event_types_key)
+	active_event_types = get_event_types(event_types_key)	
+	if month == 0:
+		print "Looking for ", playername, active_event_types, "from", season
+		game_ids = get_game_ids_full(team,season)
+		ext_ids = filter_game_ids(game_ids, active_event_types,fullyear,location)
+	else:
+		print "Looking for ", playername, active_event_types, "from", season, "/", month
+		game_ids = get_game_ids(team,season,month)
+	
 	ext_ids = filter_game_ids(game_ids, active_event_types,fullyear,location)
-	# print ext_ids
 	final_urls = parse_for_player(playername, ext_ids)
 	print "Found", len(final_urls), active_event_types, ":"
-
 	final_dict = {}
 	final_dict['links'] = final_urls
-	# for final_url in final_urls:
-	# 	final_dict['links'] = final_url
+
 	final_json = json.dumps(final_dict)
 
 	return final_json

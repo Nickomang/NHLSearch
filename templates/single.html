@@ -46,7 +46,7 @@
 			<option value="2016">2015-2016</option>
 		</select>
 		<select name="month" id="">
-			<!-- <option value="0">All</option> -->
+			<option value="0">All</option>
 			<option value="1">Jan</option>
 			<option value="2">Feb</option>
 			<option value="3">Mar</option>
@@ -64,7 +64,18 @@
 	</form>
 	<h1>
 		{% if playername %}
-		{{ playername }}'s goals during {{ season }}, {{ month }}
+		{{ playername }}'s 
+		{% for type in active_event_types %}
+		{{ urls | length }}
+		{{ type }}s,
+		from
+		{% if month == 0 %}
+			all of
+		{% else %}
+			{{ month }}/
+		{% endif %}
+		{{ season }}
+		{% endfor %}
 		{% endif %}
 	</h1>
 	<ul>
