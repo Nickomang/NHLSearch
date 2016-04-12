@@ -161,6 +161,15 @@ def filter_game_ids(game_ids, event_types, fullyear, location):
 				ext_ids.append(ext_id_single)
 	return ext_ids
 
+# Takes the list of lists of ext_ids and returns a single type of game_ids
+# def filter_game_ids(game_ids, event_type, fullyear, location):
+# 	ext_ids = []
+# 	for game_id in game_ids:
+# 		ext_ids_single = get_ext_ids(game_id, fullyear, event_dict[event_type], location)
+# 		for ext_id_single in ext_ids_single:
+# 			ext_ids.append(ext_id_single)
+# 	return ext_ids
+
 #Uses all of the above functions to allow the user to search for a player and return the goals
 def single_player_search(playername, team, season, month, fullyear, location, active_event_types):
 	# active_event_types = get_event_types(event_types_key)	
