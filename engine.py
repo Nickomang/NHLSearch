@@ -82,13 +82,13 @@ def get_ext_ids(game_id, fullyear, event_num, location):
 				print "Fuck bettman"
 				return []
 	
-	# This block is because sometimes the NHL fucks up and the older ones need the newer treatment
-	try:
-		json_response = json.loads(trimmed_response)
+	# # This block is because sometimes the NHL fucks up and the older ones need the newer treatment
+	# try:
+	# 	json_response = json.loads(trimmed_response)
 		
-	except ValueError:
-		trimmed_response = response[10:-1]
-		
+	# except ValueError:
+	# 	trimmed_response = response[10:-1]
+	
 	json_response = json.loads(trimmed_response)
 	ext_ids = []
 
@@ -130,8 +130,11 @@ def get_description_of_event(ext_id):
 	response = requests.get(url).text
 	response = response.replace("'","")
 	response = response.replace("\\","")
-
-	json_response = json.loads(response)
+	try:
+		json_response = json.loads(response)
+	except ValueError:
+		print "NHL pls"
+		return ""
 	return json_response[0]['name']
 
 # Gets the link to the .mp4 file of the highlight
@@ -186,6 +189,8 @@ def single_player_search(playername, team, season, month, fullyear, location, ac
 	print "Found", len(final_urls), active_event_types, ":"
 	final_dict = {}
 	final_dict['links'] = final_urls
+
+	# print final_dict
 
 	final_json = json.dumps(final_dict)
 
