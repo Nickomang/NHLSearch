@@ -31,28 +31,44 @@ def get_game_ids(team, season, month):
 		game_ids.append(str(game['gameId']))
 	return game_ids
 
+# # Returns a list of game_id's for a given team during the entirety of a given season
+# def get_game_ids_full(team, season):
+# 	game_ids = []
+# 	if season == 2016:
+# 		# Need to get october goals
+# 		for month in (10,11,12,1,2):
+# 			if (month > 7):
+# 				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+# 			else:
+# 				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+# 			response = requests.get(url).json()
+# 			for game in response['games']:
+# 				game_ids.append(str(game['gameId']))
+# 	else:
+# 		for month in (10,11,12,1,2,3,4,5,6,7):
+# 			if (month > 7):
+# 				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+# 			else:
+# 				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+# 			response = requests.get(url).json()
+# 			for game in response['games']:
+# 				game_ids.append(str(game['gameId']))
+# 	return game_ids
+
 # Returns a list of game_id's for a given team during the entirety of a given season
 def get_game_ids_full(team, season):
 	game_ids = []
-	if season == 2016:
-		# Need to get october goals
-		for month in (10,11,12,1,2):
-			if (month > 7):
-				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
-			else:
-				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+	for month in (10,11,12,1,2,3,4,5,6,7,8,9):
+		if (month > 7):
+			url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+		else:
+			url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
+		try:
 			response = requests.get(url).json()
 			for game in response['games']:
 				game_ids.append(str(game['gameId']))
-	else:
-		for month in (10,11,12,1,2,3,4,5,6,7):
-			if (month > 7):
-				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season-1) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
-			else:
-				url = "http://nhlwc.cdnak.neulion.com/fs1/nhl/league/clubschedule/" + team + "/" + str(season) + "/" + str(month).zfill(2) + "/iphone/clubschedule.json"
-			response = requests.get(url).json()
-			for game in response['games']:
-				game_ids.append(str(game['gameId']))
+		except ValueError:
+			game_ids.append('')		
 	return game_ids
 
 # Gets the ext_id's from a given game id. Options for event type and home/away broadcast
