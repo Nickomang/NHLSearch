@@ -7,16 +7,17 @@ import time
 start_time = time.time()
 
 # Information
-playername = "Max Pacioretty"
-team = "MTL"
+# THIS WILL FIND EVERY PATRICK KANE GOAL
+playername = "Patrick Kane"
+team = "CHI"
 season = 2015
 fullyear = str(season-1)+str(season)
 # h or a or fr (seems they dont store all french broadcasts)
-location = 'fr'
+location = 'h'
 # [hits, goals, saves]
 event_types_key = [0,1,0]
 
-engine.get_ext_ids("2014030111", "20132014", 505,"fr")
+engine.get_ext_ids("2014030111", "20132014", 505,location)
 
 # # Function Calls
 def final():

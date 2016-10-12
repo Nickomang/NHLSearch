@@ -110,10 +110,13 @@ def get_ext_ids(game_id, fullyear, event_num, location):
 
 	# Needs this because the NHL inexplicably sometimes uses events and sometimes uses ingame
 	key = ''
-	if(json_response['video']['events']):
-		key = 'events'
-	elif(json_response['video']['ingame']):
-		key = 'ingame'
+	if('video' in json_response):
+		if('events' in json_response['video']):
+			key = 'events'
+		elif('ingame' in json_reponse['video']):
+			key = 'ingame'
+		else:
+			return ext_ids
 	else:
 		return ext_ids
 

@@ -1,9 +1,4 @@
-from flask import Flask, render_template, request
-import engine
-import example1
-import json
-
-app = Flask(__name__)
+import app 
 
 @app.route("/")
 def home():
@@ -36,8 +31,3 @@ def single():
 		urls = json.loads(links)['links']
 		return render_template("single.html", playername = playername, season = season, active_event_types=active_event_types, month = month, urls = urls)
 	return render_template("single.html")
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
